@@ -4,6 +4,7 @@ from math import *
 
 # Разрешение игрового окна
 RESOLUTION = WIDTH, HEIGHT = 1200, 800
+FPS = 60
 
 class Resources:
   pass
@@ -33,20 +34,38 @@ def run():
     global r
     s = r.surface
     px, py = 10, 30
+    sx, sy = 0, 0
 
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 exit()
+        # Get delta time in milliseconds
+        dt = r.clock.tick(FPS) / 1000.0
 
         # Получить список нажатых клавиш. Список тут: https://www.pygame.org/docs/ref/key.html
         keys = pygame.key.get_pressed()
 
         # В зависимости от нажатых клавиш, выполняем действия
-        if(keys[pg.K_LEFT]): px -= 10
-        if(keys[pg.K_RIGHT]): px += 10
-        if(keys[pg.K_UP]): py -= 10
-        if(keys[pg.K_DOWN]): py += 10
+        csx, csy = 0, 0
+        if(keys[pg.K_LEFT]): csx = -10 * dt
+        if(keys[pg.K_RIGHT]): csx = 10 * dt
+        if(keys[pg.K_UP]): csy = -10 * dt
+        if(keys[pg.K_DOWN]): csy = 10 * dt
+        sx = min(10, max(-10, sx + csx))
+        sy = min(10, max(-10, sy + csy))
+        px += sx
+        py += sy
+        if(not csx):
+          if(abs(sx) > 1):
+            sx -= 3 * (dt if sx > 1 else -dt if sx < 1 else 0)
+          else: 
+            sx = 0
+        if(not csy):
+          if(abs(sy) > 1):
+            sy -= 3 * (dt if sy > 1 else -dt if sy < 1 else 0)
+          else: 
+            sy = 0
 
         # Рисовать фон
         s.blit(r.bg, (0, 0))
