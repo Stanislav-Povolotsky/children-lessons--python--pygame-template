@@ -48,13 +48,17 @@ def run():
         if(keys[pg.K_UP]): py -= 10
         if(keys[pg.K_DOWN]): py += 10
 
-        # Рисовать фон
-        s.blit(r.bg, (0, 0))
+        # Рисовать фон (или изображение или очистка экрана)
+        s.blit(r.bg, (0, 0)) # Рисуем фоновое изображение
+        #s.fill('black')     # Заполняем фон чёрным цветом
+
         # Рисовать изображение
         s.blit(r.img, (px, py))
+
         # Рисовать круг
         x, y, radius = 310, 120, 40
         pygame.draw.circle(s, pygame.Color('gainsboro'), (x, y), radius, 7)
+
         # Рисовать линию
         x1, y1 = 10, 10
         x2, y2 = 600, 200
