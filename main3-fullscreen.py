@@ -36,6 +36,7 @@ def run():
     s = r.surface
     px, py = 10, 30
     sx, sy = 0, 0
+    rm = 1
 
     while True:
         for event in pygame.event.get():
@@ -44,6 +45,10 @@ def run():
             elif event.type == pygame.VIDEORESIZE:
                 RESOLUTION = WIDTH, HEIGHT = event.dict['size']
                 r.bg = pygame.transform.scale(r.bg_orig, (WIDTH, HEIGHT))
+            elif event.type == pygame.KEYDOWN:
+                if(event.key == pg.K_EQUALS): rm += 1
+                if(event.key == pg.K_MINUS): rm -= 1
+
         # Get delta time in milliseconds
         dt = r.clock.tick(FPS) / 1000.0
 
@@ -79,7 +84,7 @@ def run():
         s.blit(r.img, (px, py))
         # Рисовать круг
         x, y, radius = 310, 120, 40
-        pygame.draw.circle(s, pygame.Color('gainsboro'), (x, y), radius, 7)
+        pygame.draw.circle(s, pygame.Color('gainsboro'), (x, y), radius * rm, 7)
         # Рисовать линию
         x1, y1 = 10, 10
         x2, y2 = 600, 200
